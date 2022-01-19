@@ -66,4 +66,24 @@ public class Scacchiera extends JComponent {
 		}
 		repaint();
 	}
+	
+	public int inserisciGettone(int x) {
+		System.out.println("sono in inserisciGettone:" + x);
+		if(x>=495 && x<=595)
+			return 0;
+		else if(x>=625 && x<=725)
+			return 1;
+		else if(x>=755 && x<=855)
+			return 2;
+		else if(x>=885 && x<=985)
+			return 3;
+		else if(x>=1015 && x<=1115)
+			return 4;
+		else if(x>=1145 && x<=1245)
+			return 5;
+		else if(x>=1275 && x<=1375)
+			return 6;
+		else
+			return -1;
+	}
 }
