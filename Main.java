@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class Main {
 
 	private static boolean turno;
-	private static Map<Integer, Boolean> gettoni;
+	private static Map<Integer, String> gettoni;
 	
 	public static void main(String[] args) {
 		JFrame frame=new JFrame();
@@ -23,12 +23,10 @@ public class Main {
 		gettoni=new HashMap<>();
 		
 		for(int i=0;i<42;i++)
-			gettoni.put(i, false);
+			gettoni.put(i, null);
 		
 		Scacchiera scacchiera=new Scacchiera();
 		frame.add(scacchiera);
-		scacchiera.ridisegna(0,"computer");
-		scacchiera.ridisegna(1,"giocatore");
 		
 		scacchiera.addMouseListener(new MouseListener() {
 			@Override
@@ -47,15 +45,20 @@ public class Main {
 					if(colonna!=-1) {
 						int idGettone=-1;
 						for(int i=5; i>=0;i--) {
-							if(!gettoni.get((i*7)+colonna)) {
+							if(gettoni.get((i*7)+colonna)==null) {
 								idGettone=(i*7)+colonna;
-								gettoni.put(idGettone, true);
+								gettoni.remove(idGettone);
+								gettoni.put(idGettone, "giocatore");
 								break;
 							}		
 						}
-						if(idGettone != -1)
+						if(idGettone != -1) {
+							controllaFineGioco(idGettone);
 							scacchiera.ridisegna(idGettone, "giocatore");
+							
+						}
 					}
+					
 					turno=false;
 				}
 				else {
@@ -64,9 +67,9 @@ public class Main {
 					if(colonna!=-1) {
 						int idGettone=-1;
 						for(int i=5; i>=0;i--) {
-							if(!gettoni.get((i*7)+colonna)) {
+							if(gettoni.get((i*7)+colonna)==null) {
 								idGettone=(i*7)+colonna;
-								gettoni.put(idGettone, true);
+								gettoni.put(idGettone, "computer");
 								break;
 							}		
 						}
@@ -77,12 +80,25 @@ public class Main {
 				}
 			}
 		});
-		
-		
-		
+	
 	}
 	
-	
+
+	public static boolean controllaFineGioco(int id) {
+		int consecutivi=1;
+		String utente=gettoni.get(id);
+		
+		//controllo orizzontale
+		if(gettoni.get(id+1).equals(utente))
+			if(gettoni.get(id+2).equals(utente))
+				if(gettoni.get(id+3).equals(utente))
+					return true;
+				else if(gettoni.get(id-1).equals(utente))
+					return true;
+		
+		System.out.println(utente+" ha vinto");
+		return false;
+	}
 
 
 }
