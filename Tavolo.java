@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-public class Scacchiera extends JComponent {
+public class Tavolo extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -15,17 +15,17 @@ public class Scacchiera extends JComponent {
 	private static final Color COLORE_COMPUTER=Color.GREEN;
 	private static final Color COLORE_VUOTO=Color.WHITE;
 	
-	ArrayList<Gettone> gettoni;
+	ArrayList<Pedina> pedine;
 	
-	public Scacchiera() {
-		gettoni=new ArrayList<>();
+	public Tavolo() {
+		pedine=new ArrayList<>();
 		generaGettoni();
 	}
 	
 	private void generaGettoni() {
 		for(int i=0;i<6;i++) 
 			for(int j=0;j<7;j++) 
-				gettoni.add(new Gettone(495+(j*130), 75+(i*130), COLORE_VUOTO));
+				pedine.add(new Pedina(495+(j*130), 75+(i*130), COLORE_VUOTO));
 	}
 
 	public void paintComponent(Graphics g) {
@@ -39,7 +39,7 @@ public class Scacchiera extends JComponent {
 		
 		Ellipse2D.Double cerchio;
 		
-		for(Gettone x: gettoni) {
+		for(Pedina x: pedine) {
 			 cerchio=new Ellipse2D.Double(x.getX(),x.getY(),100,100);
 			 g2.setColor(x.getColor());
 			 g2.fill(cerchio);
@@ -54,11 +54,11 @@ public class Scacchiera extends JComponent {
 	public void ridisegna(int index, String user) {	
 		switch (user) {
 			case "computer": {
-				gettoni.get(index).setColor(COLORE_COMPUTER);
+				pedine.get(index).setColor(COLORE_COMPUTER);
 				break;
 			}
 			case "giocatore":{
-				gettoni.get(index).setColor(COLORE_GIOCATORE);
+				pedine.get(index).setColor(COLORE_GIOCATORE);
 				break;
 			}
 			default:

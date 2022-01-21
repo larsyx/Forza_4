@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class Main {
 
 	private static boolean turno;
-	private static Map<Integer, String> gettoni;
+	private static Map<Integer, String> pedine;
 	
 	public static void main(String[] args) {
 		JFrame frame=new JFrame();
@@ -20,15 +20,15 @@ public class Main {
 		
 		frame.setSize(1900, 900);
 		turno=true;
-		gettoni=new HashMap<>();
+		pedine=new HashMap<>();
 		
 		for(int i=0;i<42;i++)
-			gettoni.put(i, null);
+			pedine.put(i, null);
 		
-		Scacchiera scacchiera=new Scacchiera();
-		frame.add(scacchiera);
+		Tavolo tavolo=new Tavolo();
+		frame.add(tavolo);
 		
-		scacchiera.addMouseListener(new MouseListener() {
+		tavolo.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
 			@Override
@@ -41,20 +41,19 @@ public class Main {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(turno) {
-					int colonna=scacchiera.inserisciGettone(e.getX());
+					int colonna=tavolo.inserisciGettone(e.getX());
 					if(colonna!=-1) {
 						int idGettone=-1;
 						for(int i=5; i>=0;i--) {
-							if(gettoni.get((i*7)+colonna)==null) {
+							if(pedine.get((i*7)+colonna)==null) {
 								idGettone=(i*7)+colonna;
-								gettoni.remove(idGettone);
-								gettoni.put(idGettone, "giocatore");
+								pedine.put(idGettone, "giocatore");
 								break;
 							}		
 						}
 						if(idGettone != -1) {
-							controllaFineGioco(idGettone);
-							scacchiera.ridisegna(idGettone, "giocatore");
+							//controllaFineGioco(idGettone);
+							tavolo.ridisegna(idGettone, "giocatore");
 							
 						}
 					}
@@ -63,18 +62,18 @@ public class Main {
 				}
 				else {
 					//da cancellare usato solo per l'implementazione
-					int colonna=scacchiera.inserisciGettone(e.getX());
+					int colonna=tavolo.inserisciGettone(e.getX());
 					if(colonna!=-1) {
 						int idGettone=-1;
 						for(int i=5; i>=0;i--) {
-							if(gettoni.get((i*7)+colonna)==null) {
+							if(pedine.get((i*7)+colonna)==null) {
 								idGettone=(i*7)+colonna;
-								gettoni.put(idGettone, "computer");
+								pedine.put(idGettone, "computer");
 								break;
 							}		
 						}
 						if(idGettone != -1)
-							scacchiera.ridisegna(idGettone, "computer");
+							tavolo.ridisegna(idGettone, "computer");
 					}
 					turno=true;
 				}
@@ -84,7 +83,7 @@ public class Main {
 	}
 	
 
-	public static boolean controllaFineGioco(int id) {
+	/*public static boolean controllaFineGioco(int id) {
 		int consecutivi=1;
 		String utente=gettoni.get(id);
 		
@@ -98,7 +97,7 @@ public class Main {
 		
 		System.out.println(utente+" ha vinto");
 		return false;
-	}
+	}*/
 
 
 }

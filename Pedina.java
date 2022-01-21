@@ -1,13 +1,13 @@
 import java.awt.Color;
 
 
-public class Gettone {
+public class Pedina {
 
 
 	private int x,y ;
 	private Color color;
 	
-	public Gettone( int x, int y, Color c) {
+	public Pedina( int x, int y, Color c) {
 		this.x=x;
 		this.y=y;
 		color=c;
