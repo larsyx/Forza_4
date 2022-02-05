@@ -52,6 +52,10 @@ public class Tavolo extends JComponent {
 	
 	
 	public void ridisegna(int index, String user) {	
+		
+		if(index<0 || index>42)
+			return;
+		
 		switch (user) {
 			case "computer": {
 				pedine.get(index).setColor(COLORE_COMPUTER);
@@ -85,5 +89,12 @@ public class Tavolo extends JComponent {
 			return 6;
 		else
 			return -1;
+	}
+
+	public void reset() {
+//		pedine=new ArrayList<>();
+//		generaGettoni();
+//		this.repaint();
+		
 	}
 }
