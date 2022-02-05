@@ -16,11 +16,11 @@ import javax.swing.JPanel;
 
 
 public class Main {
-
+	
 	private static String modalita="";
 	private static boolean turno=true;
 	
-	
+	private static ImageIcon icona = new ImageIcon("icona.png");
 	private static JPanel panel;
 	private static JButton avvio;
 	private static JButton riavvia;
@@ -40,10 +40,9 @@ public class Main {
 		frame.setTitle("Forza 4");
 		frame.setSize(1000,1000);;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setIconImage(new ImageIcon("icona.png").getImage());
+		frame.setIconImage(new ImageIcon("icona_default").getImage());
 		frame.setVisible(true);
 		
-
 		tavolo=new Tavolo();
 		JPanel pannello=new JPanel(new BorderLayout());
 		pannello.add(tavolo, BorderLayout.CENTER);
@@ -51,8 +50,6 @@ public class Main {
 		creaMenu();
 		pannello.add(panel, BorderLayout.SOUTH);
 		frame.add(pannello);
-		
-
 	}
 
 
@@ -68,7 +65,7 @@ public class Main {
 				String[] opzioni= {"Difficile", "Normale"};
 				
 				if((!modalita.equals(opzioni[0])) && (!modalita.equals(opzioni[1]))){
-					int i=JOptionPane.showOptionDialog(null, "Quale modalità di gioco scegli?", "Scegli modalità", 0, 0, null, opzioni, e);
+					int i=JOptionPane.showOptionDialog(null, "Quale modalità di gioco scegli?", "Scegli modalità", 0, 0, icona, opzioni, e);
 					logger.info("risultato "+ i );
 					switch(i) {
 						case 0:	modalita = "Difficile"; break;
@@ -90,6 +87,9 @@ public class Main {
 				modalita = "";
 				avvio.setEnabled(true);
 				disattivaTavolo();
+				
+				tavolo.reset();
+				tavoloLogic.reset();
 			}
 		});
 		
@@ -108,7 +108,10 @@ public class Main {
 	}
 	
 	private static void fineGioco(String giocatore) {
-		System.out.println("GIoco finito ha vinto "+ giocatore);
+		disattivaTavolo();
+		
+		JOptionPane.showMessageDialog(null, "Gioco finito ha vinto: " + giocatore, "Forza 4", 0, icona);
+		
 	}
 	
 	public static class Listener implements MouseListener{
@@ -122,22 +125,24 @@ public class Main {
 			if(turno) {
 				int colonna=tavolo.inserisciGettone(e.getX());
 				int idGettone = tavoloLogic.inserisciPedina(colonna, "giocatore");
-//				if(tavoloLogic.controllaVincitoreX("giocatore"))
-//					fineGioco("giocatore");
 				tavolo.ridisegna(idGettone, "giocatore");
-				tavoloLogic.toString();
-				turno=false;
+				if(tavoloLogic.controllaVincitoreX("giocatore"))
+					fineGioco("giocatore");
+				
+				if(idGettone>=0 && idGettone<=42)
+					turno=false;
+				
 			}
 			else {
 				//da cancellare usato solo per l'implementazione
 				int colonna=tavolo.inserisciGettone(e.getX());
 				int idGettone = tavoloLogic.inserisciPedina(colonna, "computer");
-				tavoloLogic.controllaVincitoreX("giocatore");
-//				if(tavoloLogic.controllaVincitoreX("giocatore"))
-//					fineGioco("computer");
 				tavolo.ridisegna(idGettone, "computer");
-				tavoloLogic.toString();
-				turno=true;
+				if(tavoloLogic.controllaVincitoreX("computer"))
+					fineGioco("computer");
+				
+				if(idGettone>=0 && idGettone<=42)
+					turno=true;
 			}
 		}	
 	}

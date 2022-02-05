@@ -72,7 +72,9 @@ public class Tavolo extends JComponent {
 	}
 	
 	public int inserisciGettone(int x) {
-		System.out.println("sono in inserisciGettone:" + x);
+		
+		
+		
 		if(x>=495 && x<=595)
 			return 0;
 		else if(x>=625 && x<=725)
@@ -92,9 +94,9 @@ public class Tavolo extends JComponent {
 	}
 
 	public void reset() {
-//		pedine=new ArrayList<>();
-//		generaGettoni();
-//		this.repaint();
+		pedine=new ArrayList<>();
+		generaGettoni();
+		this.repaint();
 		
 	}
 }
