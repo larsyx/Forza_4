@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import ai.MinimaxAi;
+import ai.Mossa;
+
 
 
 public class Main {
@@ -28,7 +31,7 @@ public class Main {
 	private static JButton riavvia;
 
 	
-	private static Tavolo tavolo= new Tavolo();
+	private static TavoloUI tavolo= new TavoloUI();
 	private static TavoloLogic tavoloLogic=new TavoloLogic();
 	
 	private static Logger logger=Logger.getGlobal();
@@ -45,7 +48,7 @@ public class Main {
 		frame.setIconImage(new ImageIcon("./icone/icona_default.png").getImage());
 		frame.setVisible(true);
 		
-		tavolo=new Tavolo();
+		tavolo=new TavoloUI();
 		JPanel pannello=new JPanel(new BorderLayout());
 		pannello.add(tavolo, BorderLayout.CENTER);
 		
@@ -92,6 +95,7 @@ public class Main {
 				
 				tavolo.reset();
 				tavoloLogic.reset();
+				turno=true;
 			}
 		});
 		
@@ -126,29 +130,78 @@ public class Main {
 		public void mouseClicked(MouseEvent e) {
 			if(turno) {
 				int colonna=tavolo.inserisciGettone(e.getX());
-				int idGettone = tavoloLogic.inserisciPedina(colonna, "giocatore");
+				/*int idGettone = tavoloLogic.inserisciPedina(colonna, "giocatore");
 				tavolo.ridisegna(idGettone, "giocatore");
-				if(tavoloLogic.controllaVincitoreX("giocatore"))
-					fineGioco("giocatore");
+				if(tavoloLogic.controllaFineGioco()) {
+					if(tavoloLogic.controllaVincitoreX("giocatore"))
+						fineGioco("giocatore");
+					else
+						fineGioco("pareggio");
+				}
 				
 				if(idGettone>=0 && idGettone<=42)
 					turno=false;
-				
+				*/
+				eseguiMossa(colonna, "giocatore");
 			}
 			else {
+				
+				/*MinimaxAi ai=new MinimaxAi();
+				Mossa mossa = ai.trovaMossa(tavoloLogic);
+				
+				int idGettone = tavoloLogic.inserisciPedina(mossa.getColonna(), "giocatore");
+				tavolo.ridisegna(idGettone, "giocatore");
+				
+				if(tavoloLogic.controllaFineGioco()) {
+					if(tavoloLogic.controllaVincitoreX("giocatore"))
+						fineGioco("giocatore");
+					else
+						fineGioco("pareggio");
+				}
+				
+				if(idGettone>=0 && idGettone<=42)
+					turno=true;
+				*/
+				int colonna=tavolo.inserisciGettone(e.getX());
+				eseguiMossa(colonna, "computer");
+				/*
 				//da cancellare usato solo per l'implementazione
 				int colonna=tavolo.inserisciGettone(e.getX());
 				int idGettone = tavoloLogic.inserisciPedina(colonna, "computer");
 				tavolo.ridisegna(idGettone, "computer");
-				if(tavoloLogic.controllaVincitoreX("computer"))
-					fineGioco("computer");
+				if(tavoloLogic.controllaFineGioco()) {
+					if(tavoloLogic.controllaVincitoreX("computer"))
+						fineGioco("computer");
+					else
+						fineGioco("pareggio");
+				}
 				
 				if(idGettone>=0 && idGettone<=42)
 					turno=true;
+				*/	
 			}
 		}	
 	}
 	
 	
+	
+	public static void eseguiMossa(int colonna, String giocatore) {
+		
+		int idGettone = tavoloLogic.inserisciPedina(colonna, giocatore);
+		tavolo.ridisegna(idGettone, giocatore);
+		if(tavoloLogic.controllaFineGioco()) {
+			if(tavoloLogic.controllaVincitoreX(giocatore))
+				fineGioco(giocatore);
+			else
+				fineGioco("pareggio");
+		}
+		
+		if(idGettone>=0 && idGettone<=42) {
+			if(giocatore.equals("giocatore"))
+				turno=false;
+			if(giocatore.equals("computer"))
+				turno=true;
+		}
+	}
 }
 

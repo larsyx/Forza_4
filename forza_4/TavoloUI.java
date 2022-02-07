@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-public class Tavolo extends JComponent {
+public class TavoloUI extends JComponent {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -18,7 +18,7 @@ public class Tavolo extends JComponent {
 	
 	ArrayList<Pedina> pedine;
 	
-	public Tavolo() {
+	public TavoloUI() {
 		pedine=new ArrayList<>();
 		generaGettoni();
 	}
