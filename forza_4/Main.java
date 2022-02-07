@@ -120,6 +120,12 @@ public class Main {
 		
 	}
 	
+	private static void turnoComputer() {
+		MinimaxAi ai=new MinimaxAi();
+		Mossa mossa = ai.trovaMossa(tavoloLogic);
+		eseguiMossa(mossa.getColonna(), "computer");
+	}	
+	
 	public static class Listener implements MouseListener{
 		public void mouseReleased(MouseEvent e) {}
 		public void mousePressed(MouseEvent e) {}
@@ -130,57 +136,24 @@ public class Main {
 		public void mouseClicked(MouseEvent e) {
 			if(turno) {
 				int colonna=tavolo.inserisciGettone(e.getX());
-				/*int idGettone = tavoloLogic.inserisciPedina(colonna, "giocatore");
-				tavolo.ridisegna(idGettone, "giocatore");
-				if(tavoloLogic.controllaFineGioco()) {
-					if(tavoloLogic.controllaVincitoreX("giocatore"))
-						fineGioco("giocatore");
-					else
-						fineGioco("pareggio");
-				}
-				
-				if(idGettone>=0 && idGettone<=42)
-					turno=false;
-				*/
 				eseguiMossa(colonna, "giocatore");
+				
+				//mossa computer
+				turnoComputer();
 			}
 			else {
 				
 				/*MinimaxAi ai=new MinimaxAi();
 				Mossa mossa = ai.trovaMossa(tavoloLogic);
-				
-				int idGettone = tavoloLogic.inserisciPedina(mossa.getColonna(), "giocatore");
-				tavolo.ridisegna(idGettone, "giocatore");
-				
-				if(tavoloLogic.controllaFineGioco()) {
-					if(tavoloLogic.controllaVincitoreX("giocatore"))
-						fineGioco("giocatore");
-					else
-						fineGioco("pareggio");
-				}
-				
-				if(idGettone>=0 && idGettone<=42)
-					turno=true;
+				eseguiMossa(mossa.getColonna(), "computer");
 				*/
-				int colonna=tavolo.inserisciGettone(e.getX());
-				eseguiMossa(colonna, "computer");
-				/*
-				//da cancellare usato solo per l'implementazione
-				int colonna=tavolo.inserisciGettone(e.getX());
-				int idGettone = tavoloLogic.inserisciPedina(colonna, "computer");
-				tavolo.ridisegna(idGettone, "computer");
-				if(tavoloLogic.controllaFineGioco()) {
-					if(tavoloLogic.controllaVincitoreX("computer"))
-						fineGioco("computer");
-					else
-						fineGioco("pareggio");
-				}
 				
-				if(idGettone>=0 && idGettone<=42)
-					turno=true;
-				*/	
+				//int colonna=tavolo.inserisciGettone(e.getX());
+				//eseguiMossa(colonna, "computer");
+				
 			}
-		}	
+		}
+		
 	}
 	
 	

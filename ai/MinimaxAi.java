@@ -6,18 +6,20 @@ public class MinimaxAi {
 
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
+		System.out.println("sono in trova mossa");
 		return valore_max(tavolo, Integer.MIN_VALUE, Integer.MAX_VALUE).getMossa();
 		
 	}
 
 	private MossaPunteggio valore_max(Tavolo tavolo, int alfa, int beta) {
+		System.out.print("sono in max ");
+		List<Mossa> mosse=tavolo.mossePossibili();
 		int migliorPunteggio = Integer.MIN_VALUE;
 		Mossa migliorMossa = null;
 		
-		if(tavolo.controllaFineGioco())
+		if(mosse.isEmpty())
 			migliorPunteggio= tavolo.utilita();
 		else {
-			List<Mossa> mosse=tavolo.mossePossibili();
 			for(Mossa mossa: mosse) {
 				mossa.esegui();
 				int punteggio = valore_min(tavolo, alfa, beta).getPunteggio();
@@ -40,11 +42,11 @@ public class MinimaxAi {
 	private MossaPunteggio valore_min(Tavolo tavolo, int alfa, int beta) {
 		int migliorPunteggio = Integer.MAX_VALUE;
 		Mossa migliorMossa = null;
+		List<Mossa> mosse=tavolo.mossePossibili();
 		
-		if(tavolo.controllaFineGioco())
-			migliorPunteggio= tavolo.utilita();
+		if(mosse.isEmpty())
+			migliorPunteggio = tavolo.utilita();
 		else {
-			List<Mossa> mosse=tavolo.mossePossibili();
 			for(Mossa mossa: mosse) {
 				mossa.esegui();
 				int punteggio = valore_max(tavolo, alfa, beta).getPunteggio();

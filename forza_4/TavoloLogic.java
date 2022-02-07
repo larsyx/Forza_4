@@ -217,17 +217,21 @@ public class TavoloLogic implements Tavolo{
 			for(int i=0; i<6; i++) {
 				if(tavolo[i][x].equals(UTENTE))
 					nu++;
-				if(tavolo[i][x].equals(COMPUTER))
+				else if(tavolo[i][x].equals(COMPUTER))
 					nc++;
 			}	
 		}
 		
-		if((nu-nc)==1)
-			return COMPUTER;
-		if((nu-nc)==0)
-			return UTENTE;
+		System.out.println("stampo nu:" +nu+" nc: "+ nc +" i: " + (nu-nc));
 		
-		return null;
+		if((nu-nc)==1)
+			return "computer";
+	//	if((nu-nc)==0)
+	//		return "utente";
+		else
+			return "utente";
+		
+		
 	}
 	
 	public int utilita() {
@@ -256,6 +260,7 @@ public class TavoloLogic implements Tavolo{
 		@Override
 		public void esegui() {
 			tavolo.inserisciPedina(colonna, giocatore);
+			tavolo.toString();
 			
 		}
 
