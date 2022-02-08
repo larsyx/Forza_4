@@ -14,6 +14,7 @@ public class MinimaxAi {
 	private MossaPunteggio valore_max(Tavolo tavolo, int alfa, int beta) {
 		System.out.print("sono in max ");
 		List<Mossa> mosse=tavolo.mossePossibili();
+		
 		int migliorPunteggio = Integer.MIN_VALUE;
 		Mossa migliorMossa = null;
 		
@@ -33,9 +34,9 @@ public class MinimaxAi {
 					}
 					alfa = Math.max(alfa, migliorPunteggio);		
 				}
+				mossa.annulla();
 			}
 		}
-		
 		return new MossaPunteggio(migliorMossa, migliorPunteggio);
 	}
 	
@@ -43,6 +44,8 @@ public class MinimaxAi {
 		int migliorPunteggio = Integer.MAX_VALUE;
 		Mossa migliorMossa = null;
 		List<Mossa> mosse=tavolo.mossePossibili();
+//		for(Mossa x: mosse)
+//			System.out.println(x.toString());
 		
 		if(mosse.isEmpty())
 			migliorPunteggio = tavolo.utilita();
@@ -58,11 +61,11 @@ public class MinimaxAi {
 						mossa.annulla();
 						break;
 					}
-					beta = Math.min(alfa, migliorPunteggio);		
+					beta = Math.min(beta, migliorPunteggio);		
 				}
+				mossa.annulla();
 			}
 		}
-		
 		return new MossaPunteggio(migliorMossa, migliorPunteggio);
 	}
 }

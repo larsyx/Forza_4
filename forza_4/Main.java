@@ -29,6 +29,7 @@ public class Main {
 	private static JPanel panel;
 	private static JButton avvio;
 	private static JButton riavvia;
+	private static JFrame frame;
 
 	
 	private static TavoloUI tavolo= new TavoloUI();
@@ -41,7 +42,7 @@ public class Main {
 	public static void main(String[] args) {
 		logger.setLevel(Level.OFF);
 		
-		JFrame frame=new JFrame();
+		frame=new JFrame();
 		frame.setTitle("Forza 4");
 		frame.setSize(1000,1000);;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,6 +56,8 @@ public class Main {
 		creaMenu();
 		pannello.add(panel, BorderLayout.SOUTH);
 		frame.add(pannello);
+		
+		frame.revalidate();
 	}
 
 
@@ -121,9 +124,22 @@ public class Main {
 	}
 	
 	private static void turnoComputer() {
-		MinimaxAi ai=new MinimaxAi();
-		Mossa mossa = ai.trovaMossa(tavoloLogic);
-		eseguiMossa(mossa.getColonna(), "computer");
+		Thread thread=new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				MinimaxAi ai=new MinimaxAi();
+				Mossa mossa = ai.trovaMossa(tavoloLogic);		
+				eseguiMossa(mossa.getColonna(), "computer");
+				
+			}
+		});
+		
+		thread.start();
+		
+//		MinimaxAi ai=new MinimaxAi();
+//		Mossa mossa = ai.trovaMossa(tavoloLogic);		
+//		eseguiMossa(mossa.getColonna(), "computer");
 	}	
 	
 	public static class Listener implements MouseListener{
@@ -139,26 +155,24 @@ public class Main {
 				eseguiMossa(colonna, "giocatore");
 				
 				//mossa computer
-				turnoComputer();
-			}
-			else {
 				
+			}
+			else {	
 				/*MinimaxAi ai=new MinimaxAi();
 				Mossa mossa = ai.trovaMossa(tavoloLogic);
 				eseguiMossa(mossa.getColonna(), "computer");
 				*/
 				
 				//int colonna=tavolo.inserisciGettone(e.getX());
-				//eseguiMossa(colonna, "computer");
-				
+				//eseguiMossa(colonna, "computer");		
 			}
-		}
-		
+		}	
 	}
 	
 	
 	
 	public static void eseguiMossa(int colonna, String giocatore) {
+		
 		
 		int idGettone = tavoloLogic.inserisciPedina(colonna, giocatore);
 		tavolo.ridisegna(idGettone, giocatore);
@@ -170,10 +184,14 @@ public class Main {
 		}
 		
 		if(idGettone>=0 && idGettone<=42) {
-			if(giocatore.equals("giocatore"))
+			if(giocatore.equals("giocatore")) {
 				turno=false;
-			if(giocatore.equals("computer"))
+				turnoComputer();
+			}
+			if(giocatore.equals("computer")) {
+
 				turno=true;
+			}
 		}
 	}
 }

@@ -203,7 +203,7 @@ public class TavoloLogic implements Tavolo{
 	
 	public List<Mossa> mossePossibili(){
 		ArrayList<Mossa> mosse=new ArrayList<>();
-		for(int i=0; i<7; i++)
+		for(int i=0; i<4; i++)
 			if(tavolo[5][i].equals(EMPTY))
 				mosse.add(new Forza_4Mossa(this, i, prossimoTurno()));
 		
@@ -222,29 +222,153 @@ public class TavoloLogic implements Tavolo{
 			}	
 		}
 		
-		System.out.println("stampo nu:" +nu+" nc: "+ nc +" i: " + (nu-nc));
-		
 		if((nu-nc)==1)
 			return "computer";
-	//	if((nu-nc)==0)
-	//		return "utente";
-		else
-			return "utente";
+		if((nu-nc)==0)
+			return "giocatore";
 		
-		
+		return null;
 	}
 	
 	public int utilita() {
 		if(controllaVincitoreX("giocatore"))
-			return 1;
+			return -4;
 		
 		if(controllaVincitoreX("computer"))
-			return -1;
+			return 4;
 		
-		return 0;	
+		if(controlla3("giocatore"))
+			return -3;
+		
+		if(controlla3("utente"))
+			return 3;
+		
+		if(controlla2("giocatore"))
+			return -2;
+		
+		if(controlla2("computer"))
+			return 2;
+		
+		
+		return 1;	
 	}
 
 	
+	private boolean controlla2(String giocatore) {
+		String turno;
+		
+		if(giocatore.equals("giocatore"))
+			turno = UTENTE;
+		else
+			turno = COMPUTER;
+		
+		for(int x=1; x<6; x++)
+			for(int k=1; k<5; k++) {
+				if(tavolo[x][k].equals(EMPTY))
+					break;
+				if(tavolo[x][k].equals(turno))
+					for(int i=-1; i<2; i++) 
+						for(int y=-1; y<2; y++)
+							if(tavolo[x+i][k+y].equals(turno))
+								return true;
+			}
+		
+		//controllo rimanenti
+		for(int i=0; i<5; i++) {
+			if(tavolo[i][0].equals(turno))
+				if(tavolo[i+1][0].equals(turno))
+					return true;
+			if(tavolo[i][6].equals(turno))
+				if(tavolo[i+1][6].equals(turno))
+					return true;
+		}
+		
+		for(int i=0; i<6; i++) {
+			if(tavolo[0][i].equals(turno))
+				if(tavolo[0][i+1].equals(turno))
+					return true;
+			if(tavolo[5][i].equals(turno))
+				if(tavolo[5][i+1].equals(turno))
+					return true;
+		}
+		return false;
+	}
+
+	private boolean controlla3(String giocatore) {
+		String turno;
+		if(giocatore.equals("giocatore"))
+			turno = UTENTE;
+		else
+			turno = COMPUTER;
+		
+		boolean win;
+		//controllo verticale
+		for(int i=0; i<7; i++) {
+			for(int k=0; k<3; k++) {
+	            win = true; 
+				for(int j=0; j<k+3; j++) {
+	                if(!tavolo[j+k][i].equals(turno)) 
+	                    win = false;
+	                
+	                if(!win) 
+	                    break;
+				}
+				if(win)
+					return true;
+			}
+				
+		}
+		
+		//controllo orizzontale
+		for(int i=0; i<6; i++) {
+			for(int k=0; k<4; k++) {
+				win = true; 
+				for(int j=0; j<k+3; j++) {
+	                if(!tavolo[i][j+k].equals(turno)) 
+	                	win = false;
+	                
+	                if(!win) 
+	                    break;
+				}
+				if(win)
+					return true;
+			}
+		}
+					
+		//controllo diagonale
+		for(int k=0; k<4; k++) {
+			for(int x=0; x<5;x++) {
+				//verso destra
+				win = true; 
+				for(int i=0, j=0 ; i<3 && j<3 ; i++, j++) {
+		            if(!tavolo[i+k][j+x].equals(turno)) 
+		            	win = false;
+		                
+		            if(!win) 
+		                break;	
+				}
+				if(win)
+					return true;
+				
+				//verso sinistra
+				win = true; 
+				for(int i=2, j=0 ; i>=0 && j<3 ; i--, j++) {
+		            if(!tavolo[i+k][j+x].equals(turno)) 
+		            	win = false;
+		                
+		            if(!win) 
+		                break;	
+				}
+				if(win)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	
+
+
 	public class Forza_4Mossa implements Mossa{
 
 		private TavoloLogic tavolo;
@@ -260,8 +384,6 @@ public class TavoloLogic implements Tavolo{
 		@Override
 		public void esegui() {
 			tavolo.inserisciPedina(colonna, giocatore);
-			tavolo.toString();
-			
 		}
 
 		@Override
@@ -274,12 +396,10 @@ public class TavoloLogic implements Tavolo{
 					if(tavolo.tavolo[i][colonna].equals(EMPTY))
 						break;	
 				}
-				
 				tavolo.tavolo[i-1][colonna] = EMPTY;
 			}
 		}
 
-		
 		@Override
 		public String toString() {
 			return "Forza_4Mossa [tavolo=" + tavolo + ", colonna=" + colonna + ", giocatore=" + giocatore + "]";
@@ -289,9 +409,6 @@ public class TavoloLogic implements Tavolo{
 		public int getColonna() {
 			return colonna;
 		}
-		
-		
-		
 	}
 	
 }
