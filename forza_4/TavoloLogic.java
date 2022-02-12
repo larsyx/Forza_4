@@ -2,6 +2,7 @@ package forza_4;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -208,19 +209,11 @@ public class TavoloLogic implements Tavolo{
 	public List<Mossa> mossePossibili(String turno){
 		ArrayList<Mossa> mosse=new ArrayList<>();
 		for(int i=0; i<7; i++)
-			if(tavolo[5][i].equals(EMPTY)) {
-				Mossa mossa= new Forza_4Mossa(this, i, prossimoTurno());
-				mossa.esegui();
-				int utilita = mossa.getTavolo().utilita();
-				mossa.annulla();
-				if(utilita >= 3 || utilita <= -3) 
-					mosse.add(0, mossa);
-				else
-					mosse.add(mossa);
-					
-				
-			}
+			if(tavolo[5][i].equals(EMPTY)) 
+				mosse.add(new Forza_4Mossa(this, i, prossimoTurno()));
 		
+		mosse.sort(new MossaComparator(turno));
+
 		logger.info("stampo size mosse possibili: "+ mosse.size());
 		return mosse;
 	}
@@ -249,14 +242,23 @@ public class TavoloLogic implements Tavolo{
 	
 	public int utilita() {
 		if(controllaVincitoreX("giocatore"))
-			return -4;
+			return -1;
 		
+		if(controllaVincitoreX("computer"))
+			return 1;
+		return 0;
+	}
+	
+	public int valutazione() {	
+		if(controllaVincitoreX("giocatore"))
+			return -4;
+	
 		if(controllaVincitoreX("computer"))
 			return 4;
 		
 		if(controlla3("giocatore"))
 			return -3;
-		
+
 		if(controlla3("utente"))
 			return 3;
 		
@@ -266,10 +268,7 @@ public class TavoloLogic implements Tavolo{
 		if(controlla2("computer"))
 			return 2;
 		
-		
 		return 1;	
-		
-		
 	}
 
 	
@@ -313,7 +312,7 @@ public class TavoloLogic implements Tavolo{
 		return false;
 	}
 
-	private boolean controlla3(String giocatore) {
+	public boolean controlla3(String giocatore) {
 		String turno;
 		if(giocatore.equals("giocatore"))
 			turno = UTENTE;
@@ -322,70 +321,145 @@ public class TavoloLogic implements Tavolo{
 		
 		boolean win;
 		//controllo verticale
-		for(int i=0; i<7; i++) {
-			for(int k=0; k<3; k++) {
-	            win = true; 
-				for(int j=0; j<k+3; j++) {
-	                if(!tavolo[j+k][i].equals(turno)) 
-	                    win = false;
-	                
-	                if(!win) 
-	                    break;
-				}
-				if(win)
-					return true;
-			}
-				
+		for(int i=0; i<7; i++) {		
+			for(int k=4; k>=2; k--)
+				if(!tavolo[k][i].equals(EMPTY)) {
+					win = true;
+					for(int j=k; j>=0; j--) {
+						if(!tavolo[j][i].equals(turno)) { 
+		                    win = false;
+		                    break;
+						}	
+					}
+					if(win)
+						return win;
+				}	
 		}
-		
+
 		//controllo orizzontale
-		for(int i=0; i<6; i++) {
-			for(int k=0; k<4; k++) {
-				win = true; 
-				for(int j=0; j<k+3; j++) {
-	                if(!tavolo[i][j+k].equals(turno)) 
-	                	win = false;
-	                
-	                if(!win) 
-	                    break;
+		for(int i=0; i<7; i++) {
+			for(int k=5; k>=0; k--) {
+				if(!tavolo[k][i].equals(EMPTY)) {
+					win = true;
+					for(int j=0; j<=7; j++) {
+						if(j<=3) {
+							for(int y=j; y<j+3; y++) {
+								if(!tavolo[k][y].equals(turno)) { 
+				                    win = false;
+				                    break;
+								}
+							}
+							if(win) {
+								if(tavolo[k][j+3].equals(EMPTY))
+									return win;
+							}
+						}
+						if(j>=3) {
+							for(int y=j; y<j-3; y--) {
+								if(!tavolo[k][y].equals(turno)) { 
+				                    win = false;
+				                    break;
+								}
+							}
+							if(win){
+								if(tavolo[k][j-3].equals(EMPTY))
+									return win;
+							}
+						}
+						
+						//controllo partendo da centrale
+						if(j>=1 && j<=5) {
+							for(int y=j-1; y<j+2; y++) {
+								if(!tavolo[k][y].equals(turno)) { 
+				                    win = false;
+				                    break;
+								}
+							}
+							
+							if(win) {
+								if(j>1) {
+									if(tavolo[k][j-2].equals(EMPTY))
+										return win;
+								}
+								
+								if(j<6) {
+									if(tavolo[k][j+2].equals(EMPTY))
+										return win;
+								}
+							}
+						}
+					}
 				}
-				if(win)
-					return true;
 			}
 		}
 					
 		//controllo diagonale
-		for(int k=0; k<4; k++) {
-			for(int x=0; x<5;x++) {
-				//verso destra
-				win = true; 
-				for(int i=0, j=0 ; i<3 && j<3 ; i++, j++) {
-		            if(!tavolo[i+k][j+x].equals(turno)) 
-		            	win = false;
-		                
-		            if(!win) 
-		                break;	
+		for(int i=0; i<7; i++) {
+			for(int k=4; k>=0; k--) {
+				if(!tavolo[k][i].equals(EMPTY) && k>=2) {
+					//verso sinistra
+					if(i>=2 && i<=5) {
+						win = true;
+						for(int j=k ,y=i; j>=k-2 && y>=i-2; j--, y--) {
+							if(!tavolo[j][y].equals(turno)) { 
+			                    win = false;
+			                    break;
+							}	
+						}
+						if(win)
+							if(tavolo[k+1][i+1].equals(EMPTY))
+								return win;
+					}
+					//verso destra
+					if(i<=4 && i>=1) {
+						win = true;
+						for(int j=k ,y=i; j>=k-2 && y>=i+2; j--, y++) {
+							if(!tavolo[j][y].equals(turno)) { 
+			                    win = false;
+			                    break;
+							}	
+						}
+						if(win)
+							if(tavolo[k+1][i-1].equals(EMPTY))
+								return win;
+					}	
 				}
-				if(win)
-					return true;
-				
-				//verso sinistra
-				win = true; 
-				for(int i=2, j=0 ; i>=0 && j<3 ; i--, j++) {
-		            if(!tavolo[i+k][j+x].equals(turno)) 
-		            	win = false;
-		                
-		            if(!win) 
-		                break;	
-				}
-				if(win)
-					return true;
-			}
+			}	
 		}
 		return false;
 	}
 
 	
+	public class MossaComparator implements Comparator<Mossa>{
+
+		private String turno;
+		public MossaComparator(String turno) {
+			this.turno=turno;
+		}
+		
+		@Override
+		public int compare(Mossa o1, Mossa o2) {
+			int o1Utilita;
+			int o2Utilita;
+			
+			o1.esegui();
+			o1Utilita=o1.getTavolo().valutazione();
+			o1.annulla();
+			
+			o2.esegui();
+			o2Utilita=o2.getTavolo().valutazione();
+			o2.annulla();
+			
+			if(turno.equals("min")) 
+				return o1Utilita - o2Utilita;
+			
+			else if(turno.equals("max")) 
+				return o2Utilita - o1Utilita;
+			
+			
+			return 0;
+		}
+	}
 
 
 	public class Forza_4Mossa implements Mossa{

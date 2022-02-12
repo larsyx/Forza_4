@@ -6,6 +6,7 @@ public interface Tavolo {
 
 	List<Mossa> mossePossibili(String turno);
 	int utilita();
+	int valutazione();
 	boolean controllaFineGioco();
 	Mossa getCasuale();
 }

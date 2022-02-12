@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -120,8 +119,14 @@ public class Main {
 	
 	private static void fineGioco(String giocatore) {
 		disattivaTavolo();
+		String messaggioFineGioco; 
+		if(giocatore.equals("pareggio")) 
+			messaggioFineGioco =  "Gioco finito in ";
+		else
+			messaggioFineGioco =  "Gioco finito ha vinto: ";
 		
-		JOptionPane.showMessageDialog(null, "Gioco finito ha vinto: " + giocatore, "Forza 4", 0, icona);
+		
+		JOptionPane.showMessageDialog(null, messaggioFineGioco + giocatore, "Forza 4", 0, icona);
 		
 	}
 	
@@ -175,8 +180,7 @@ public class Main {
 	
 	
 	public static void eseguiMossa(int colonna, String giocatore) {
-		
-		
+
 		int idGettone = tavoloLogic.inserisciPedina(colonna, giocatore);
 		tavolo.ridisegna(idGettone, giocatore);
 		if(tavoloLogic.controllaFineGioco()) {
@@ -184,6 +188,8 @@ public class Main {
 				fineGioco(giocatore);
 			else
 				fineGioco("pareggio");
+			
+			return;
 		}
 		
 		if(idGettone>=0 && idGettone<=42) {
@@ -192,7 +198,6 @@ public class Main {
 				turnoComputer();
 			}
 			if(giocatore.equals("computer")) {
-
 				turno=true;
 			}
 		}

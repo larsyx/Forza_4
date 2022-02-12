@@ -5,14 +5,13 @@ import java.util.logging.Logger;
 
 public class MinimaxEvalAi implements MinimaxInterface{
 	
-	private static final int TAGLIO = 5;
+	private static final int TAGLIO = 7;
 	private static Logger logger=Logger.getGlobal();
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
-		if(tavolo.utilita()==1)
+		if(tavolo.valutazione()==1)
 			return tavolo.getCasuale();
 		
-		System.out.println("sono in trova mossa");
 		int taglio=0;
 		return valore_max(tavolo, Integer.MIN_VALUE, Integer.MAX_VALUE,taglio).getMossa();
 		
@@ -22,17 +21,12 @@ public class MinimaxEvalAi implements MinimaxInterface{
 		logger.info("stampo taglio: "+ taglio);
 		logger.info("sono in max ");
 		List<Mossa> mosse=tavolo.mossePossibili("max");
-//		for(Mossa x: mosse) {
-//			x.esegui();
-//			x.getTavolo().toString();
-//			System.out.println("stampo utilita: " + x.getTavolo().utilita());
-//			x.annulla();
-//		}
+
 		int migliorPunteggio = Integer.MIN_VALUE;
 		Mossa migliorMossa = null;
 		
 		if(taglio > TAGLIO || mosse.isEmpty())
-			migliorPunteggio= tavolo.utilita();
+			migliorPunteggio = tavolo.valutazione();
 		else {
 			for(Mossa mossa: mosse) {
 				mossa.esegui();
@@ -59,17 +53,9 @@ public class MinimaxEvalAi implements MinimaxInterface{
 		int migliorPunteggio = Integer.MAX_VALUE;
 		Mossa migliorMossa = null;
 		List<Mossa> mosse=tavolo.mossePossibili("min");
-//		for(Mossa x: mosse) {
-//			x.esegui();
-//			x.getTavolo().toString();
-//			System.out.println("stampo utilita: " + x.getTavolo().utilita());
-//
-//			
-//			x.annulla();
-//		}
-		
+
 		if(taglio > TAGLIO || mosse.isEmpty())
-			migliorPunteggio = tavolo.utilita();
+			migliorPunteggio = tavolo.valutazione();
 		else {
 			for(Mossa mossa: mosse) {
 				mossa.esegui();

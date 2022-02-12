@@ -6,12 +6,10 @@ public class MinimaxAi implements MinimaxInterface{
 
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
-		System.out.println("sono in trova mossa");
 		return valore_max(tavolo, Integer.MIN_VALUE, Integer.MAX_VALUE).getMossa();	
 	}
 
 	private MossaPunteggio valore_max(Tavolo tavolo, int alfa, int beta) {
-		System.out.print("sono in max ");
 		List<Mossa> mosse=tavolo.mossePossibili("max");
 		
 		int migliorPunteggio = Integer.MIN_VALUE;
@@ -43,9 +41,7 @@ public class MinimaxAi implements MinimaxInterface{
 		int migliorPunteggio = Integer.MAX_VALUE;
 		Mossa migliorMossa = null;
 		List<Mossa> mosse=tavolo.mossePossibili("min");
-//		for(Mossa x: mosse)
-//			System.out.println(x.toString());
-		
+
 		if(mosse.isEmpty())
 			migliorPunteggio = tavolo.utilita();
 		else {
