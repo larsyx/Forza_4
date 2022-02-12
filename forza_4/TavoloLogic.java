@@ -1,13 +1,17 @@
 package forza_4;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Logger;
 
 import ai.Mossa;
 import ai.Tavolo;
 
 public class TavoloLogic implements Tavolo{
-	
+
+	private static Logger logger=Logger.getGlobal();
 	private static final String EMPTY="";
 	private static final String UTENTE="rosso";
 	private static final String COMPUTER="verde";
@@ -201,14 +205,27 @@ public class TavoloLogic implements Tavolo{
 	}
 
 	
-	public List<Mossa> mossePossibili(){
+	public List<Mossa> mossePossibili(String turno){
 		ArrayList<Mossa> mosse=new ArrayList<>();
-		for(int i=0; i<4; i++)
-			if(tavolo[5][i].equals(EMPTY))
-				mosse.add(new Forza_4Mossa(this, i, prossimoTurno()));
+		for(int i=0; i<7; i++)
+			if(tavolo[5][i].equals(EMPTY)) {
+				Mossa mossa= new Forza_4Mossa(this, i, prossimoTurno());
+				mossa.esegui();
+				int utilita = mossa.getTavolo().utilita();
+				mossa.annulla();
+				if(utilita >= 3 || utilita <= -3) 
+					mosse.add(0, mossa);
+				else
+					mosse.add(mossa);
+					
+				
+			}
 		
+		logger.info("stampo size mosse possibili: "+ mosse.size());
 		return mosse;
 	}
+	
+	
 
 	public String prossimoTurno(){
 		int nu=0;
@@ -251,6 +268,8 @@ public class TavoloLogic implements Tavolo{
 		
 		
 		return 1;	
+		
+		
 	}
 
 	
@@ -409,6 +428,21 @@ public class TavoloLogic implements Tavolo{
 		public int getColonna() {
 			return colonna;
 		}
+		
+		public Tavolo getTavolo() {
+			return tavolo;
+		}
+	}
+	
+
+
+	@Override
+	public Mossa getCasuale() {
+		Random rand=new Random();
+		
+		Mossa mossa= new Forza_4Mossa(this, rand.nextInt(7), COMPUTER);
+		
+		return mossa;
 	}
 	
 }

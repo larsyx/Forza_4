@@ -5,4 +5,5 @@ public interface Mossa {
 	void esegui();
 	void annulla();
 	int getColonna();
+	Tavolo getTavolo();
 }

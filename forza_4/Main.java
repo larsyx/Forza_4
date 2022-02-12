@@ -16,13 +16,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ai.MinimaxAi;
+import ai.MinimaxEvalAi;
+import ai.MinimaxInterface;
 import ai.Mossa;
 
 
 
 public class Main {
 	
-	private static String modalita="";
+	
 	private static boolean turno=true;
 	
 	private static ImageIcon icona = new ImageIcon("./icone/icona.png");
@@ -34,13 +36,14 @@ public class Main {
 	
 	private static TavoloUI tavolo= new TavoloUI();
 	private static TavoloLogic tavoloLogic=new TavoloLogic();
+	private static MinimaxInterface algoritmo=null;
 	
 	private static Logger logger=Logger.getGlobal();
 	
 	private  static MouseListener listener = new Listener();
 	
 	public static void main(String[] args) {
-		logger.setLevel(Level.OFF);
+		//logger.setLevel(Level.OFF);
 		
 		frame=new JFrame();
 		frame.setTitle("Forza 4");
@@ -72,12 +75,12 @@ public class Main {
 				
 				String[] opzioni= {"Difficile", "Normale"};
 				
-				if((!modalita.equals(opzioni[0])) && (!modalita.equals(opzioni[1]))){
+				if((algoritmo==null)){
 					int i=JOptionPane.showOptionDialog(null, "Quale modalità di gioco scegli?", "Scegli modalità", 0, 0, icona, opzioni, e);
 					logger.info("risultato "+ i );
 					switch(i) {
-						case 0:	modalita = "Difficile"; break;
-						case 1:	modalita = "Normale"; break;
+						case 0:	algoritmo=new MinimaxAi(); break;
+						case 1:	algoritmo=new MinimaxEvalAi(); break;
 						default: return;
 					}
 					avvio.setEnabled(false);
@@ -92,7 +95,7 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 				logger.info("Riavvia Clicked");
-				modalita = "";
+				algoritmo = null;
 				avvio.setEnabled(true);
 				disattivaTavolo();
 				
@@ -107,8 +110,7 @@ public class Main {
 	}
 	
 	public static void attivaTavolo() {
-		logger.info(modalita);
-		if(modalita.equals("Difficile") || modalita.equals("Normale"))
+		if(algoritmo!=null)
 			tavolo.addMouseListener(listener);
 	}
 	
@@ -124,22 +126,23 @@ public class Main {
 	}
 	
 	private static void turnoComputer() {
+		
+		logger.info(algoritmo.toString());
+		
 		Thread thread=new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				MinimaxAi ai=new MinimaxAi();
-				Mossa mossa = ai.trovaMossa(tavoloLogic);		
+				Mossa mossa = algoritmo.trovaMossa(tavoloLogic);		
 				eseguiMossa(mossa.getColonna(), "computer");
-				
 			}
 		});
 		
 		thread.start();
 		
-//		MinimaxAi ai=new MinimaxAi();
-//		Mossa mossa = ai.trovaMossa(tavoloLogic);		
+//		Mossa mossa = algoritmo.trovaMossa(tavoloLogic);		
 //		eseguiMossa(mossa.getColonna(), "computer");
+		
 	}	
 	
 	public static class Listener implements MouseListener{
