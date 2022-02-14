@@ -143,11 +143,7 @@ public class Main {
 			}
 		});
 		
-		thread.start();
-		
-//		Mossa mossa = algoritmo.trovaMossa(tavoloLogic);		
-//		eseguiMossa(mossa.getColonna(), "computer");
-		
+		thread.start();		
 	}	
 	
 	public static class Listener implements MouseListener{

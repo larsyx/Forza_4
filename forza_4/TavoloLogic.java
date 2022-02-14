@@ -248,10 +248,12 @@ public class TavoloLogic implements Tavolo{
 		
 		if(controllaVincitoreX("computer"))
 			return 1;
+		
 		return 0;
 	}
 	
 	public int valutazione() {	
+		
 		if(controllaVincitoreX("giocatore"))
 			return -4;
 	
@@ -261,7 +263,7 @@ public class TavoloLogic implements Tavolo{
 		if(controlla3("giocatore"))
 			return -3;
 
-		if(controlla3("utente"))
+		if(controlla3("computer"))
 			return 3;
 		
 		if(controlla2("giocatore"))
@@ -323,23 +325,25 @@ public class TavoloLogic implements Tavolo{
 		
 		boolean win;
 		//controllo verticale
-		for(int i=0; i<7; i++) {		
+		for(int i=0; i < C; i++) {		
 			for(int k=4; k>=2; k--)
 				if(!tavolo[k][i].equals(EMPTY)) {
 					win = true;
-					for(int j=k; j>=0; j--) {
+					for(int j=k; j>=k-2; j--) {
 						if(!tavolo[j][i].equals(turno)) { 
 		                    win = false;
 		                    break;
 						}	
 					}
 					if(win)
-						return win;
+						if(tavolo[k+1][i].equals(EMPTY))
+							return win;
+					break;
 				}	
 		}
 
 		//controllo orizzontale
-		for(int i=0; i<7; i++) {
+		for(int i=0; i < C; i++) {
 			for(int k=5; k>=0; k--) {
 				if(!tavolo[k][i].equals(EMPTY)) {
 					win = true;
@@ -390,15 +394,16 @@ public class TavoloLogic implements Tavolo{
 								}
 							}
 						}
+						break;
 					}
 				}
 			}
 		}
 					
 		//controllo diagonale
-		for(int i=0; i<7; i++) {
-			for(int k=4; k>=0; k--) {
-				if(!tavolo[k][i].equals(EMPTY) && k>=2) {
+		for(int i=0; i < C; i++) {
+			for(int k=4; k>=2; k--) {
+				if(!tavolo[k+1][i].equals(EMPTY) ) {
 					//verso sinistra
 					if(i>=2 && i<=5) {
 						win = true;
@@ -426,6 +431,7 @@ public class TavoloLogic implements Tavolo{
 								return win;
 					}	
 				}
+				break;
 			}	
 		}
 		return false;
@@ -457,7 +463,6 @@ public class TavoloLogic implements Tavolo{
 			
 			else if(turno.equals("max")) 
 				return o2Utilita - o1Utilita;
-			
 			
 			return 0;
 		}
@@ -510,12 +515,9 @@ public class TavoloLogic implements Tavolo{
 		}
 	}
 	
-
-
 	@Override
 	public Mossa getCasuale() {
 		Random rand=new Random();
-		
 		Mossa mossa= new Forza_4Mossa(this, rand.nextInt(7), COMPUTER);
 		
 		return mossa;

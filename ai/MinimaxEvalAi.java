@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 public class MinimaxEvalAi implements MinimaxInterface{
 	
-	private static final int TAGLIO = 7;
+	private static final int TAGLIO = 5;
 	private static Logger logger=Logger.getGlobal();
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
@@ -25,8 +25,11 @@ public class MinimaxEvalAi implements MinimaxInterface{
 		int migliorPunteggio = Integer.MIN_VALUE;
 		Mossa migliorMossa = null;
 		
-		if(taglio > TAGLIO || mosse.isEmpty())
+		if(taglio > TAGLIO /*|| mosse.isEmpty() || tavolo.controllaFineGioco()*/) {
 			migliorPunteggio = tavolo.valutazione();
+			System.out.println("valutazione: "+ tavolo.valutazione());
+			tavolo.toString();
+		}
 		else {
 			for(Mossa mossa: mosse) {
 				mossa.esegui();
@@ -54,7 +57,7 @@ public class MinimaxEvalAi implements MinimaxInterface{
 		Mossa migliorMossa = null;
 		List<Mossa> mosse=tavolo.mossePossibili("min");
 
-		if(taglio > TAGLIO || mosse.isEmpty())
+		if(taglio > TAGLIO /*|| mosse.isEmpty() || tavolo.controllaFineGioco()*/)
 			migliorPunteggio = tavolo.valutazione();
 		else {
 			for(Mossa mossa: mosse) {
