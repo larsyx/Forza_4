@@ -16,6 +16,8 @@ public class TavoloLogic implements Tavolo{
 	private static final String EMPTY="";
 	private static final String UTENTE="rosso";
 	private static final String COMPUTER="verde";
+	private static final int C = 7;
+	private static final int R = 6;
 
 	private String[][] tavolo;
 	
@@ -28,7 +30,7 @@ public class TavoloLogic implements Tavolo{
 	}
 	
 	public void reset() {
-		tavolo = new String[6][7];
+		tavolo = new String[R][C];
 		for(int i=0; i<6; i++)
 			for(int j=0; j<7; j++)
 				tavolo[i][j]=EMPTY;
@@ -43,8 +45,8 @@ public class TavoloLogic implements Tavolo{
 			turno = COMPUTER;
 		
 		int i=1000;
-		if(index>=0 && index <=6)
-			for(i=0 ; i<6 ; i++)
+		if(index >= 0 && index <= R)
+			for(i = 0 ; i < R ; i++)
 				if(tavolo[i][index].equals("")) {
 					tavolo[i][index] = turno;
 					break;
@@ -56,9 +58,9 @@ public class TavoloLogic implements Tavolo{
 	
 	public String toString() {
 		System.out.println("Stampo tavolo:");
-		for(int i=0; i<7 ; i++) {
+		for(int i = 0; i < C ; i++) {
 			System.out.println("\nstampo colonna: "+ i);
-			for(int j=0 ; j<6 ; j++)
+			for(int j = 0 ; j < R ; j++)
 				System.out.print(" "+tavolo[j][i]+" ");
 		}
 		System.out.println("\n");
@@ -73,7 +75,7 @@ public class TavoloLogic implements Tavolo{
 		if(controllaVincitoreX("computer"))
 			return true;
 		
-		for(int i = 0; i<7; i++)
+		for(int i = 0; i < C; i++)
 			if(tavolo[5][i].equals(EMPTY))
 				return false;
 		
@@ -91,7 +93,7 @@ public class TavoloLogic implements Tavolo{
 		
 		boolean win;
 		//controllo verticale
-		for(int i=0; i<7; i++) {
+		for(int i=0; i < C; i++) {
             win = true; 
 			for(int j=0; j<4; j++) {
                 if(!tavolo[j][i].equals(turno)) 
@@ -208,7 +210,7 @@ public class TavoloLogic implements Tavolo{
 	
 	public List<Mossa> mossePossibili(String turno){
 		ArrayList<Mossa> mosse=new ArrayList<>();
-		for(int i=0; i<7; i++)
+		for(int i = 0; i < C; i++)
 			if(tavolo[5][i].equals(EMPTY)) 
 				mosse.add(new Forza_4Mossa(this, i, prossimoTurno()));
 		
@@ -223,8 +225,8 @@ public class TavoloLogic implements Tavolo{
 	public String prossimoTurno(){
 		int nu=0;
 		int nc=0;
-		for(int x=0; x<7;x++) {
-			for(int i=0; i<6; i++) {
+		for(int x = 0; x < C;x++) {
+			for(int i = 0; i < R; i++) {
 				if(tavolo[i][x].equals(UTENTE))
 					nu++;
 				else if(tavolo[i][x].equals(COMPUTER))

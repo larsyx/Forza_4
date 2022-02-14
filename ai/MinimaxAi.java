@@ -16,7 +16,7 @@ public class MinimaxAi implements MinimaxInterface{
 		Mossa migliorMossa = null;
 		
 		if(mosse.isEmpty())
-			migliorPunteggio= tavolo.utilita();
+			migliorPunteggio = tavolo.utilita();
 		else {
 			for(Mossa mossa: mosse) {
 				mossa.esegui();

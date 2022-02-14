@@ -9,4 +9,5 @@ public interface Tavolo {
 	int valutazione();
 	boolean controllaFineGioco();
 	Mossa getCasuale();
+	
 }
