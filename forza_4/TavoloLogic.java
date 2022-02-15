@@ -346,55 +346,53 @@ public class TavoloLogic implements Tavolo{
 		for(int i=0; i < C; i++) {
 			for(int k=5; k>=0; k--) {
 				if(!tavolo[k][i].equals(EMPTY)) {
-					win = true;
-					for(int j=0; j<=7; j++) {
-						if(j<=3) {
-							for(int y=j; y<j+3; y++) {
-								if(!tavolo[k][y].equals(turno)) { 
-				                    win = false;
-				                    break;
-								}
-							}
-							if(win) {
-								if(tavolo[k][j+3].equals(EMPTY))
-									return win;
+					if(i<=4) {
+						//verso destra
+						win=true;
+						for(int y=i; y <= i+2; y++) {
+							if(!tavolo[k][y].equals(turno)) { 
+			                    win = false;
+			                    break;
 							}
 						}
-						if(j>=3) {
-							for(int y=j; y<j-3; y--) {
-								if(!tavolo[k][y].equals(turno)) { 
-				                    win = false;
-				                    break;
-								}
-							}
-							if(win){
-								if(tavolo[k][j-3].equals(EMPTY))
-									return win;
+						if(win) {
+							if(i<=3 && tavolo[k][i+3].equals(EMPTY))
+								return win;
+							else if(i>=1 && tavolo[k][i-1].equals(EMPTY))
+								return win;
+						}
+					}
+					//al centro
+					if(i >= 1 && i <= 5) {
+						win=true;
+						for(int y=i-1; y <= i+1; y++) {
+							if(!tavolo[k][y].equals(turno)) { 
+			                    win = false;
+			                    break;
 							}
 						}
-						
-						//controllo partendo da centrale
-						if(j>=1 && j<=5) {
-							for(int y=j-1; y<j+2; y++) {
-								if(!tavolo[k][y].equals(turno)) { 
-				                    win = false;
-				                    break;
-								}
-							}
-							
-							if(win) {
-								if(j>1) {
-									if(tavolo[k][j-2].equals(EMPTY))
-										return win;
-								}
-								
-								if(j<6) {
-									if(tavolo[k][j+2].equals(EMPTY))
-										return win;
-								}
+						if(win) {
+							if(i<=4 && tavolo[k][i+2].equals(EMPTY))
+								return win;
+							else if(i>=2 && tavolo[k][i-2].equals(EMPTY))
+								return win;
+						}
+					}
+					//verso sinistra
+					if(i >= 2) {
+						win=true;
+						for(int y=i-2; y <= i; y++) {
+							if(!tavolo[k][y].equals(turno)) { 
+			                    win = false;
+			                    break;
 							}
 						}
-						break;
+						if(win) {
+							if(i>=3 && tavolo[k][i-3].equals(EMPTY))
+								return win;
+							else if(i<=5 && tavolo[k][i+1].equals(EMPTY))
+								return win;
+						}
 					}
 				}
 			}
@@ -431,7 +429,6 @@ public class TavoloLogic implements Tavolo{
 								return win;
 					}	
 				}
-				break;
 			}	
 		}
 		return false;

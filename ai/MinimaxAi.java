@@ -3,7 +3,6 @@ package ai;
 import java.util.List;
 
 public class MinimaxAi implements MinimaxInterface{
-
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
 		return valore_max(tavolo, Integer.MIN_VALUE, Integer.MAX_VALUE).getMossa();	

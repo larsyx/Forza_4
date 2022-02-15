@@ -30,21 +30,19 @@ public class testTavolo {
 		tavolo.inserisciPedina(0, "computer");
 		tavolo.inserisciPedina(0, "giocatore");
 		tavolo.inserisciPedina(0, "computer");
-		tavolo.inserisciPedina(1, "computer");
 		tavolo.inserisciPedina(2, "computer");
-		tavolo.inserisciPedina(2, "giocatore");
-		tavolo.inserisciPedina(2, "giocatore");
+		tavolo.inserisciPedina(2, "computer");
 		tavolo.inserisciPedina(3, "giocatore");
 		tavolo.inserisciPedina(3, "giocatore");
 		tavolo.inserisciPedina(3, "giocatore");
 		tavolo.inserisciPedina(3, "computer");
 		tavolo.inserisciPedina(4, "giocatore");
 		tavolo.inserisciPedina(4, "giocatore");
-		tavolo.inserisciPedina(4, "giocatore");
-		tavolo.inserisciPedina(4, "computer");
+		tavolo.inserisciPedina(5, "giocatore");
+		tavolo.inserisciPedina(5, "giocatore");
 		tavolo.inserisciPedina(6, "computer");
 
-		tavolo.inserisciPedina(5, "giocatore");
+	//	tavolo.inserisciPedina(3, "giocatore");
 		
 		tavolo.toString();
 		System.out.println("stampo valutazione : " + tavolo.valutazione());
