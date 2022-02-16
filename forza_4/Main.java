@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -42,11 +43,11 @@ public class Main {
 	private  static MouseListener listener = new Listener();
 	
 	public static void main(String[] args) {
-		//logger.setLevel(Level.OFF);
+		logger.setLevel(Level.OFF);
 		
 		frame=new JFrame();
 		frame.setTitle("Forza 4");
-		frame.setSize(1000,1000);;
+		frame.setSize(1500,1000);;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImage(new ImageIcon("./icone/icona_default.png").getImage());
 		frame.setVisible(true);
@@ -138,7 +139,10 @@ public class Main {
 			
 			@Override
 			public void run() {
-				Mossa mossa = algoritmo.trovaMossa(tavoloLogic);		
+				long inizio = System.currentTimeMillis();
+				Mossa mossa = algoritmo.trovaMossa(tavoloLogic);
+				long fine = System.currentTimeMillis();
+				System.out.println("tempo impiegato dal algoritmo: " + (fine-inizio) + "ms");
 				eseguiMossa(mossa.getColonna(), "computer");
 			}
 		});

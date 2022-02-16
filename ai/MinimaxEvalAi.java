@@ -1,15 +1,17 @@
 package ai;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MinimaxEvalAi implements MinimaxInterface{
 	
-	private static final int TAGLIO = 7;
+	private static final int TAGLIO = 8;
 	private static Logger logger=Logger.getGlobal();
 	
 	public Mossa trovaMossa(Tavolo tavolo) {
-		if(tavolo.valutazione()==1)
+		logger.setLevel(Level.OFF);
+		if(tavolo.valutazione() == 0)
 			return tavolo.getCasuale();
 		
 		int taglio=0;
@@ -27,8 +29,6 @@ public class MinimaxEvalAi implements MinimaxInterface{
 		
 		if(taglio > TAGLIO || mosse.isEmpty() || tavolo.controllaFineGioco()) {
 			migliorPunteggio = tavolo.valutazione();
-			System.out.println("valutazione: "+ tavolo.valutazione());
-			tavolo.toString();
 		}
 		else {
 			for(Mossa mossa: mosse) {

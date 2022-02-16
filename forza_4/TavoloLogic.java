@@ -1,6 +1,5 @@
 package forza_4;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.logging.Logger;
 
 import ai.Mossa;
 import ai.Tavolo;
+
 
 public class TavoloLogic implements Tavolo{
 
@@ -272,7 +272,7 @@ public class TavoloLogic implements Tavolo{
 		if(controlla2("computer"))
 			return 2;
 		
-		return 1;	
+		return 0;	
 	}
 
 	
