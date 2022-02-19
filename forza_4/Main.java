@@ -23,8 +23,7 @@ import ai.Mossa;
 
 
 public class Main {
-	
-	
+
 	private static boolean turno=true;
 	
 	private static ImageIcon icona = new ImageIcon("./icone/icona.png");
@@ -44,13 +43,15 @@ public class Main {
 	
 	public static void main(String[] args) {
 		logger.setLevel(Level.OFF);
-		
+
 		frame=new JFrame();
 		frame.setTitle("Forza 4");
-		frame.setSize(1500,1000);;
+		frame.setSize(1800,1100);;
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setIconImage(new ImageIcon("./icone/icona_default.png").getImage());
 		frame.setVisible(true);
+		
+		
 		
 		tavolo=new TavoloUI();
 		JPanel pannello=new JPanel(new BorderLayout());
@@ -76,7 +77,7 @@ public class Main {
 				String[] opzioni= {"Difficile", "Normale"};
 				
 				if((algoritmo==null)){
-					int i=JOptionPane.showOptionDialog(null, "Quale modalità di gioco scegli?", "Scegli modalità", 0, 0, icona, opzioni, e);
+					int i=JOptionPane.showOptionDialog(frame, "Quale modalità di gioco scegli?", "Scegli modalità", 0, 0, icona, opzioni, e);
 					logger.info("risultato "+ i );
 					switch(i) {
 						case 0:	algoritmo=new MinimaxAi(); break;
@@ -127,7 +128,7 @@ public class Main {
 			messaggioFineGioco =  "Gioco finito ha vinto: ";
 		
 		
-		JOptionPane.showMessageDialog(null, messaggioFineGioco + giocatore, "Forza 4", 0, icona);
+		JOptionPane.showMessageDialog(frame, messaggioFineGioco + giocatore, "Forza 4", 0, icona);
 		
 	}
 	
@@ -147,7 +148,7 @@ public class Main {
 			}
 		});
 		
-		thread.start();		
+		thread.start();	
 	}	
 	
 	public static class Listener implements MouseListener{

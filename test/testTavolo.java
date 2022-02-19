@@ -8,6 +8,9 @@ import forza_4.TavoloLogic;
 
 public class testTavolo {
 
+	public static final String g="giocatore";
+	public static final String c="computer";
+	
 	
 	public static void main(String[] args) {
 		String turno = "giocatore";
@@ -18,6 +21,7 @@ public class testTavolo {
 			else
 				turno = "giocatore";
 			
+			
 			List<Mossa> mosse= tavolo.mossePossibili(turno);
 			Random rand=new Random();
 			mosse.get(rand.nextInt(mosse.size())).esegui();;
@@ -25,24 +29,35 @@ public class testTavolo {
 		}
 		
 		tavolo= new TavoloLogic();
-		tavolo.inserisciPedina(0, "computer");
-		tavolo.inserisciPedina(0, "computer");
-		tavolo.inserisciPedina(0, "computer");
-		tavolo.inserisciPedina(0, "giocatore");
-		tavolo.inserisciPedina(0, "computer");
-		tavolo.inserisciPedina(2, "computer");
-		tavolo.inserisciPedina(2, "computer");
-		tavolo.inserisciPedina(3, "giocatore");
-		tavolo.inserisciPedina(3, "giocatore");
-		tavolo.inserisciPedina(3, "giocatore");
-		tavolo.inserisciPedina(3, "computer");
-		tavolo.inserisciPedina(4, "giocatore");
-		tavolo.inserisciPedina(4, "giocatore");
-		tavolo.inserisciPedina(5, "giocatore");
-		tavolo.inserisciPedina(5, "giocatore");
-		tavolo.inserisciPedina(6, "computer");
+		tavolo.inserisciPedina(0, c);
+		tavolo.inserisciPedina(0, c);
+		tavolo.inserisciPedina(0, c);
+		tavolo.inserisciPedina(0, g);
+	//	tavolo.inserisciPedina(0, c);
+	//	tavolo.inserisciPedina(0, c);
+//		tavolo.inserisciPedina(1, g);
+//		tavolo.inserisciPedina(1, g);
+//		tavolo.inserisciPedina(1, c);
+		//tavolo.inserisciPedina(1, c);
+		tavolo.inserisciPedina(2, c);
+		tavolo.inserisciPedina(2, c);
+	//	tavolo.inserisciPedina(2, c);
+	//	tavolo.inserisciPedina(3, c);
+		tavolo.inserisciPedina(3, g);
+		tavolo.inserisciPedina(3, g);
+		tavolo.inserisciPedina(3, g);
+		tavolo.inserisciPedina(3, c);
+		tavolo.inserisciPedina(4, g);
+		tavolo.inserisciPedina(4, g);
+		tavolo.inserisciPedina(5, g);
+		
+		System.out.println("stampo mosse max:");
+		for(Mossa x: tavolo.mossePossibili("max"))
+			System.out.println(x.toString()+ "  " + x.getTavolo().valutazione());
 
-	//	tavolo.inserisciPedina(3, "giocatore");
+		System.out.println("stampo mosse min:");
+		for(Mossa x: tavolo.mossePossibili("min"))
+			System.out.println(x.toString()+ "  " + x.getTavolo().valutazione());
 		
 		tavolo.toString();
 		System.out.println("stampo valutazione : " + tavolo.valutazione());

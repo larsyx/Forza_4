@@ -14,7 +14,7 @@ public class MinimaxAi implements MinimaxInterface{
 		int migliorPunteggio = Integer.MIN_VALUE;
 		Mossa migliorMossa = null;
 		
-		if(mosse.isEmpty() || tavolo.controllaFineGioco())
+		if(tavolo.controllaFineGioco())
 			migliorPunteggio = tavolo.utilita();
 		else {
 			for(Mossa mossa: mosse) {
@@ -41,7 +41,7 @@ public class MinimaxAi implements MinimaxInterface{
 		Mossa migliorMossa = null;
 		List<Mossa> mosse=tavolo.mossePossibili("min");
 
-		if(mosse.isEmpty() || tavolo.controllaFineGioco())
+		if(tavolo.controllaFineGioco())
 			migliorPunteggio = tavolo.utilita();
 		else {
 			for(Mossa mossa: mosse) {
